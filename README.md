@@ -9,5 +9,17 @@ A quantative study exploring the potential for LLMs to be used for automatic gra
 
 ## TODO 
 
-- Define specs for data
-- Decide LLM API
+Data processing:
+- Define specs for data, needs to fit into ChatGPT API (ChatML markup language)
+- Write problem-injector (takes correct solutions and adds problems, use these for testing grading capabilities on incorrect solutions)
+- Write text-to-prompt transformer (takes txt file of submitted answer, converts into ChatML and adds prompt)
+- Write prompt-variation transformer (takes propmt, changes it slightly, used to find best prompt over many iterations)
+- (done) Decide LLM API 
+- add spec for answer-handler, what should we keep in database? (What prompt was used, what level of context, is "roleplaying" happening, what task is it concerning)
+- add answer-handler, takes GPT response, adds outcome (correct classification or not) as well as additional feedback to a database. 
+
+
+## Questions
+
+- Can we use optimization methods such as bayesian hyperparameter tuning? If so, what could be tuned?
+
