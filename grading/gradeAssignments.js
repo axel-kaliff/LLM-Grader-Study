@@ -10,10 +10,10 @@ const args = process.argv.slice(2);
 const taskNumber = args[0] ?? "11";
 
 // Get the task number
-const assignmentFile = args[0] ?? "Box.java";
+const assignmentFile = args[1] ?? "Box.java";
 
 // Get the prompt level
-const promptLevel = args[1] ?? "nocontext";
+const promptLevel = args[2] ?? "nocontext";
 
 // Get all different student numbers from the folder
 const studentNumbers = fs.readdirSync(`./../tests/task-${taskNumber}/submissions/`);

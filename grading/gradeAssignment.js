@@ -5,7 +5,7 @@ const getSubmission = require('./getSubmission.js');
 // Arguments of this program is the task number, the prompt level, and the student number
 // Example: node gradeAssignment.js 11 comparable easy 1
 // Get the arguments from the command line
-const args = process.argv.slice(3);
+const args = process.argv.slice(2);
 
 // Get the task number
 const taskNumber = args[0] ?? "11";
@@ -32,6 +32,7 @@ function getPrompt(task, prompt) {
 
 // Do test run of getChatGPTResponse
 async function gradeAssignment(taskNumber, assignment, promptLevel, studentNumber, loggingEverything){
+  // return console.log(`Task number is ${taskNumber} and student number is ${studentNumber} and prompt level is ${promptLevel} and assignment is ${assignment}`);
   if(loggingEverything == false) process.stdout.write(`Grading student ${studentNumber}...`);
   // Get the prompt
 
