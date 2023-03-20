@@ -3,45 +3,49 @@ const getChatGPTResponse = require('../misc/getChatGPTResponse.js');
 const getSubmission = require('./getSubmission.js');
 
 // Arguments of this program is the task number, the prompt level, and the student number
-// Example: node gradeFile.js 11 easy 1
+// Example: node gradeAssignment.js 11 comparable easy 1
 // Get the arguments from the command line
-const args = process.argv.slice(2);
+const args = process.argv.slice(3);
 
 // Get the task number
 const taskNumber = args[0] ?? "11";
 
+// Get the student number
+const assignment = args[1] ?? "Box.java";
+
 // Get the prompt level
-const promptLevel = args[1] ?? "nocontext";
+const promptLevel = args[2] ?? "nocontext";
 
 // Get the student number
-const studentNumber = args[2] ?? "1";
+const studentNumber = args[3] ?? "1";
 
 // Import fs
 const fs = require('fs');
+
+// Read prompt from file baseprompt.txt
+const basePrompt = fs.readFileSync('./baseprompt.txt', 'utf8');
 
 // Function to get the grading prompt for the task, stored in `../tests/task-${task}/prompts/${prompt}.txt`
 function getPrompt(task, prompt) {
   return fs.readFileSync(`./../tests/task-${task}/prompts/${prompt}.md`, 'utf8');
 }
 
-// Read prompt from file baseprompt.txt
-const basePrompt = fs.readFileSync('./baseprompt.txt', 'utf8');
-
 // Do test run of getChatGPTResponse
-async function run(){
+async function gradeAssignment(taskNumber, assignment, promptLevel, studentNumber, loggingEverything){
+  if(loggingEverything == false) process.stdout.write(`Grading student ${studentNumber}...`);
   // Get the prompt
 
   // Log getting prompt
-  process.stdout.write("Getting prompt... ");
+  if(loggingEverything) process.stdout.write("Getting prompt... ");
   const prompt = getPrompt(taskNumber, promptLevel);
   // Log on same line
-  process.stdout.write("\rGetting prompt... Done!\n");
+  if(loggingEverything) process.stdout.write("\rGetting prompt... Done!\n");
 
   // Get the submission
   // Log getting submission
-  process.stdout.write("Getting submission... ");
-  const submission = getSubmission(taskNumber, studentNumber);
-  process.stdout.write("\rGetting submission... Done!\n");
+  if(loggingEverything) process.stdout.write("Getting submission... ");
+  const submission = getSubmission(taskNumber, assignment, studentNumber);
+  if(loggingEverything) process.stdout.write("\rGetting submission... Done!\n");
 
   // Get the response
   // Create a message array with the prompt and submission
@@ -59,7 +63,7 @@ async function run(){
   ]
 
   // Log getting response
-  process.stdout.write("Getting response... ");
+  if(loggingEverything) process.stdout.write("Getting response... ");
   // Let getting response be a mock value for now, which takes 5 seconds to get
   let done = false;
   const response =
@@ -73,10 +77,15 @@ async function run(){
     console.log(". Done!");
     // Save the response to a file, called `../tests/task-${task}/responses/${student}.txt`
     // Log saving response
-    process.stdout.write("Saving response... ");
+    if(loggingEverything) process.stdout.write("Saving response... ");
     // Write the response to the file
-    fs.writeFileSync(`./../tests/task-${taskNumber}/responses/${promptLevel}/${studentNumber}.txt`, response);
-    process.stdout.write("\rSaving response... Done!\n");
+    // If the student number folder doesn't exist, create it
+    if (!fs.existsSync(`./../tests/task-${taskNumber}/responses/${promptLevel}/${studentNumber}`)) {
+      fs.mkdirSync(`./../tests/task-${taskNumber}/responses/${promptLevel}/${studentNumber}`);
+    }
+    fs.writeFileSync(`./../tests/task-${taskNumber}/responses/${promptLevel}/${studentNumber}/${assignment}`, response);
+    if(loggingEverything) process.stdout.write("\rSaving response... Done!\n");
+    // else process.stdout.write(`\rGrading student ${studentNumber}... Done!`);
     done = true;
   });
   // For every second waiting, increase a counter and log it
@@ -86,8 +95,13 @@ async function run(){
     await new Promise(r => setTimeout(r, 1000));
     counter++;
     // Don't log the last time because it will be done
-    if (done == false) process.stdout.write(`\rGetting response... waiting for ${counter} seconds`);
+if (done == false) process.stdout.write(`\r${!loggingEverything ? `Grading student ${studentNumber}...` : "Getting response..."} waiting for ${counter} seconds`);
   }
 }
 
-run();
+// In case this file is run directly, run the function
+if (require.main === module) {
+  gradeAssignment(taskNumber, assignment, promptLevel, studentNumber, true);
+}
+
+module.exports = gradeAssignment;
