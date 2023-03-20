@@ -1,0 +1,3 @@
+[Correctness]: Partially correct
+[Summarized feedback]: The compareTo method appears to have an error on the assignments. Instead of using this.getHeight() to get the volume of the current box, the correct would be the use of the return of the method volume().
+[Possible errors]: The compareTo method is using the getHeight() method instead of the method volume(). This could lead to incorrect results.
