@@ -1,0 +1,3 @@
+[Correctness]: Partially correct
+[Summarised feedback]: The algorithm for reversing an array seems correct and efficient, but the algorithm for reversing a list has an indexing error and counts wrong. 
+[Possible errors]: In the method reversed(List<Integer> list), the for loop starts at index 5 instead of 0. This will skip the first few elements and might cause an error. Also, the for loop counts to Math.floor(n/2) which is incorrect and will not reverse the entire list. Additionally, there is no operation counter given to count the number of elementary operations, so it cannot be ensured that the complexity is O(n).
