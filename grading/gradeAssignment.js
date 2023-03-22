@@ -11,13 +11,16 @@ const args = process.argv.slice(2);
 const taskNumber = args[0] ?? "11";
 
 // Get the student number
-const assignment = args[1] ?? "Box.java";
-
-// Get the prompt level
-const promptLevel = args[2] ?? "nocontext";
+const assignmentFile = args[1] ?? "Box.java";
 
 // Get the student number
-const studentNumber = args[3] ?? "1";
+const submissionFile = args[2] ?? "Box.java";
+
+// Get the prompt level
+const promptLevel = args[3] ?? "nocontext";
+
+// Get the student number
+const studentNumber = args[4] ?? "1";
 
 // Import fs
 const fs = require('fs');
@@ -31,7 +34,7 @@ function getPrompt(task, prompt) {
 }
 
 // Do test run of getChatGPTResponse
-async function gradeAssignment(taskNumber, assignment, promptLevel, studentNumber, loggingEverything){
+async function gradeAssignment(taskNumber, assignmentFile, submissionFile, promptLevel, studentNumber, loggingEverything){
   // return console.log(`Task number is ${taskNumber} and student number is ${studentNumber} and prompt level is ${promptLevel} and assignment is ${assignment}`);
   if(loggingEverything == false) process.stdout.write(`Grading student ${studentNumber}...`);
   // Get the prompt
@@ -45,7 +48,7 @@ async function gradeAssignment(taskNumber, assignment, promptLevel, studentNumbe
   // Get the submission
   // Log getting submission
   if(loggingEverything) process.stdout.write("Getting submission... ");
-  const submission = getSubmission(taskNumber, assignment, studentNumber);
+  const submission = getSubmission(taskNumber, assignmentFile, submissionFile, studentNumber);
   if(loggingEverything) process.stdout.write("\rGetting submission... Done!\n");
 
   // Get the response
@@ -102,7 +105,7 @@ if (done == false) process.stdout.write(`\r${!loggingEverything ? `Grading stude
 
 // In case this file is run directly, run the function
 if (require.main === module) {
-  gradeAssignment(taskNumber, assignment, promptLevel, studentNumber, true);
+  gradeAssignment(taskNumber, submissionFile, promptLevel, studentNumber, true);
 }
 
 module.exports = gradeAssignment;

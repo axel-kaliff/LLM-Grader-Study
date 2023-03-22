@@ -1,0 +1,100 @@
+{
+  "10": [
+    {
+      "exercise_name": "Exercise 1: Populating Lists",
+      "assignmentFiles": ["ListProcessor.java"]
+    },
+    {
+      "exercise_name": "Exercise 2: Shuffling Lists",
+      "assignmentFiles": ["ListProcessor.java"]
+    },
+    {
+      "exercise_name": "Exercise 3: Summing Lists Iteratively",
+      "assignmentFiles": ["ListProcessor.java"]
+    },
+    {
+      "exercise_name": "Exercise 4: Summing Lists Recursively",
+      "assignmentFiles": ["ListProcessor.java"]
+    }
+  ],
+  "11": [
+    {
+      "exercise_name": "Exercise 1: Comparable Box",
+      "assignmentFiles": ["Box.java"]
+    },
+    {
+      "exercise_name": "Exercise 2: Sorting",
+      "assignmentFiles": ["BoxProcessor.java"]
+    },
+    {
+      "exercise_name": "Exercise 3: Sequential Search",
+      "assignmentFiles": ["BoxProcessor.java"]
+    },
+    {
+      "exercise_name": "Exercise 4: Binary Search",
+      "assignmentFiles": ["BoxProcessor.java"]
+    }
+  ],
+  "14": [
+    {
+      "exercise_name": "Task 2 - Linked Lists",
+      "assignmentFiles": ["LinkedList.java"]
+    },
+    {
+      "exercise_name": "Testing",
+      "assignmentFiles": ["LinkedListTest.java"]
+    }
+  ],
+  "15": [
+    {
+      "exercise_name": "Task 1 - Create a Stack Interface",
+      "assignmentFiles": ["Stack.java"]
+    },
+    {
+      "exercise_name": "Task 2 - Create an implementation of Stack",
+      "assignmentFiles": ["LinkedList.java"]
+    },
+    {
+      "exercise_name": "Task 3 - Evaluation of postfix expressions",
+      "assignmentFiles": ["Postfix.java"]
+    },
+    {
+      "exercise_name": "Testing Stack",
+      "assignmentFiles": ["StackTest.java", "LinkedList.java"]
+    },
+    {
+      "exercise_name": "Testing Postfix",
+      "assignmentFiles": ["PostfixTest.java"]
+    }
+  ],
+  "16": [
+    {
+      "exercise_name": "Task 1 - Implement a hash table",
+      "assignmentFiles": ["HashSet.java"]
+    },
+    {
+      "exercise_name": "Testing",
+      "assignmentFiles": ["SetTest.java", "HashSetTest.java"]
+    }
+  ],
+  "17": [
+    {
+      "exercise_name": "Task 1 - Implement a BST",
+      "assignmentFiles": ["Tree.java"]
+    },
+    {
+      "exercise_name": "Testing",
+      "assignmentFiles": ["TreeTest.java"]
+    }
+  ],
+  "18": [
+    {
+      "exercise_name": "Task 1 - Implement HashGraph",
+      "assignmentFiles": ["HashGraph.java"]
+    },
+    {
+      "exercise_name": "Task 2 - Components of Random Graphs",
+      "assignmentFiles": ["RandomGraphGenerator.java"]
+    }
+  ]
+}
