@@ -1,0 +1,3 @@
+[Correctness]: Partially correct
+[Summarised feedback]: The compareTo() method is almost correct, but this.getHeight() should be replaced with this.volume() to compare volumes of boxes.
+[Possible errors]: The method should compare volumes, not heights.

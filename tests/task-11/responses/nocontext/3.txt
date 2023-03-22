@@ -1,0 +1,3 @@
+[Correctness]: Partially correct
+[Summarised feedback]: The compareTo() method is not correctly implemented.
+[Possible errors]: The compareTo() method should compare the volumes of the two boxes being compared, not simply return 0. To do so, it should return a negative integer if the calling box has a smaller volume, 0 if the volumes are equal, and a positive integer if the calling box has a larger volume.

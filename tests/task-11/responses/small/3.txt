@@ -1,0 +1,3 @@
+[Correctness]: Partially correct
+[Summarised feedback]: The student has implemented the compareTo() method, but it always returns 0, meaning it's not comparing anything. 
+[Possible errors]: The compareTo() method is not correctly implemented as it is always returning 0, which means it's not properly comparing the boxes. The student should implement the comparison between the volumes of the boxes, as the compareTo() method requires.
