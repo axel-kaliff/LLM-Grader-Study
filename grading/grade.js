@@ -1,10 +1,11 @@
 const fs = require('fs');
 const prompts = require('prompts');
 const assignments = require('./assignments.json');
+const gradeAssignments = require('./gradeAssignments.js');
 
 // Function to get a list of exercises for a given task
 function getExercisesForTask(taskNumber) {
-  return assignments[taskNumber].map((assignment) => assignment.exercise_name);
+  return assignments[taskNumber].map((assignment) => assignment.assignmentName);
 }
 
 // Function to get a list of students for a given task
@@ -14,10 +15,17 @@ function getStudentsForTask(taskNumber) {
   return dirs.filter((dir) => dir.isDirectory()).map((dir) => dir.name);
 }
 
-// Function to grade the assignments for the given task, exercise, and student
-function gradeAssignments(taskNumber, exerciseNames, studentIds) {
-  // Your grading logic here...
-  console.log(taskNumber, exerciseNames, studentIds);
+function runGradeAssignments(taskNumber, exerciseName, studentId, promptLevel) {
+  // Get exercise index for the given exercise name
+  const exerciseIndex = assignments[taskNumber].findIndex((assignment) => assignment.assignmentName === exerciseName);
+
+  // Get the assignment file
+  const assignmentFile = assignments[taskNumber][exerciseIndex].assignmentFiles[0];
+
+  // Remove .md from promptLevel
+  promptLevel = promptLevel.replace('.md', '');
+
+  gradeAssignments(taskNumber, assignmentFile, exerciseIndex, promptLevel, studentId);
 }
 
 // Main function to prompt the user and run the grading script
@@ -30,7 +38,7 @@ async function run() {
     choices: taskNumberChoices.map((choice) => ({ title: choice, value: choice })),
   });
 
-  const exerciseNameChoices = ['all', getExercisesForTask(taskNumber.value)].flat();
+  const exerciseNameChoices = [getExercisesForTask(taskNumber.value)].flat();
   const exerciseName = await prompts({
     type: 'select',
     name: 'value',
@@ -46,15 +54,46 @@ async function run() {
     choices: studentIdChoices.map((choice) => ({ title: choice, value: choice })),
   });
 
-  if(exerciseName.value === 'all') {
-    exerciseName.value = getExercisesForTask(taskNumber.value);
-  }
+  // if(exerciseName.value === 'all') {
+  //   exerciseName.value = getExercisesForTask(taskNumber.value);
+  // }
 
   if(studentId.value === 'all') {
     studentId.value = getStudentsForTask(taskNumber.value);
   }
 
-  gradeAssignments(taskNumber.value, exerciseName.value, studentId.value);
+  // Get exercise index for the given exercise name
+  const exerciseIndex = assignments[taskNumber.value].findIndex((assignment) => assignment.assignmentName === exerciseName.value);
+
+  // Find context levels for the given exercise by checking what files exist in the folder
+  // If no context, exit
+  try {
+    fs.accessSync(`./../tests/task-${taskNumber.value}/prompts/${exerciseIndex}/`, fs.constants.R_OK);
+  }
+  catch (err) {
+    console.log('No context levels found for this exercise. Exiting...');
+    return;
+  }
+
+  const contextLevels = fs.readdirSync(`./../tests/task-${taskNumber.value}/prompts/${exerciseIndex}/`);
+
+  // Choose context level
+  const contextLevel = await prompts({
+    type: 'select',
+    name: 'value',
+    message: 'Which context level?',
+    choices: contextLevels.map((choice) => ({ title: choice, value: choice })),
+  });
+
+  // If all questions have been answered, run the grading script
+  if(
+    taskNumber.value &&
+    exerciseName.value &&
+    studentId.value &&
+    contextLevel.value
+  ) {
+    runGradeAssignments(taskNumber.value, exerciseName.value, studentId.value, contextLevel.value);
+  }
 }
 
 run();

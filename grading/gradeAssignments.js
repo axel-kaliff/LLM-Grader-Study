@@ -18,12 +18,14 @@ const promptLevel = args[2] ?? "nocontext";
 // Get all different student numbers from the folder
 const studentNumbers = fs.readdirSync(`./../tests/task-${taskNumber}/submissions/`);
 
-async function gradeAssignmentForAllStudents(taskNumber, assignmentFile, promptLevel) {
+async function gradeAssignmentForAllStudents(taskNumber, assignmentFile, assignmentNumber, promptLevel, studentNumbers) {
   // Loop through all student numbers
   for (const studentNumber of studentNumbers) {
     // Grade the file
-    await gradeAssignment(taskNumber, assignmentFile, promptLevel, studentNumber, false);
+    await gradeAssignment(taskNumber, assignmentFile, assignmentNumber, promptLevel, studentNumber, false);
   }
 }
 
-gradeAssignmentForAllStudents(taskNumber, assignmentFile, promptLevel);
+module.exports = gradeAssignmentForAllStudents;
+
+// gradeAssignmentForAllStudents(taskNumber, assignmentFile, promptLevel, studentNumbers);
