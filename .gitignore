@@ -2,4 +2,6 @@ node_modules
 .env
 
 tests/**/submissions/original
+tests/**/submissions/graded
 src/consents.json
+
