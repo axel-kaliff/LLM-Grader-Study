@@ -1,4 +1,4 @@
-import getAndSaveFile from './downloadFile';
+import getAndSaveFile from './getAndSaveFile';
 
 interface Student {
   id: string;
