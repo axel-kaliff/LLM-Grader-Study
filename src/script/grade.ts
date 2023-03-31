@@ -56,10 +56,13 @@ export default async function gradeScript() {
     type: 'select',
     name: 'value',
     message: 'Which student do you want to grade?',
-    choices: students.map(({ id }) => ({
-      title: id,
-      value: id,
-    })),
+    choices: [
+      { title: 'All students', value: 'all' },
+      ...students.map(({ id }) => ({
+        title: id,
+        value: id,
+      })),
+    ],
   });
 
   // Catch no answer
@@ -68,11 +71,29 @@ export default async function gradeScript() {
     return;
   }
 
-  // Grade assignment
-  gradeAssignment({
-    studentId: student.value,
-    task: task.value,
-    assignmentFiles,
-    exercise: exercise.value,
-  });
+  // GradeScript all students
+  if (student.value === 'all') {
+    students.forEach((student) => {
+      console.log(`Grading ${student.id}...`);
+      // Grade assignment
+      gradeAssignment({
+        studentId: student.id,
+        task: task.value,
+        assignmentFiles,
+        exercise: exercise.value,
+      });
+    });
+  }
+
+  // GradeScript single student
+  else {
+    console.log(`Grading ${student.value}...`);
+    // Grade assignment
+    gradeAssignment({
+      studentId: student.value,
+      task: task.value,
+      assignmentFiles,
+      exercise: exercise.value,
+    });
+  }
 }

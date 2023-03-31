@@ -24,8 +24,15 @@ export default async function gradeAssignment({
         filePath,
         studentId,
         task,
+        originality: 'anonymised',
       });
     });
+
+    // Get the exercise prompt from
+    const exercisePrompt = fs.readFileSync(
+      `tests/task-${task}/prompts/${exercise}/instruction.md`,
+      'utf8'
+    );
 
     getChatGPTResponse([
       {
@@ -33,7 +40,9 @@ export default async function gradeAssignment({
         role: 'system',
       },
       {
-        content: studentCode.map((code) => code).join(''),
+        content: `${exercisePrompt}\n\nStudent code:\n${studentCode
+          .map((code) => code)
+          .join('')}`,
         role: 'user',
       },
     ]).then((response) => {

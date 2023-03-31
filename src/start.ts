@@ -1,4 +1,5 @@
 import prompts from 'prompts';
+import runAnonymise from './script/anonymise';
 import download from './script/download';
 import gradeScript from './script/grade';
 
@@ -10,6 +11,7 @@ async function start() {
     choices: [
       { title: 'Download student data', value: 'download' },
       { title: 'Grade assignments', value: 'grade' },
+      { title: 'Anonymise student data', value: 'anonymise' },
     ],
   });
 
@@ -19,6 +21,9 @@ async function start() {
       break;
     case 'grade':
       await gradeScript();
+      break;
+    case 'anonymise':
+      await runAnonymise();
       break;
     default:
       break;
