@@ -2,6 +2,7 @@ import prompts from 'prompts';
 import runAnonymise from './script/anonymise';
 import download from './script/download';
 import gradeScript from './script/grade';
+import injectErrors from './script/injectErrors';
 
 async function start() {
   const whatToDo = await prompts({
@@ -12,6 +13,7 @@ async function start() {
       { title: 'Download student data', value: 'download' },
       { title: 'Grade assignments', value: 'grade' },
       { title: 'Anonymise student data', value: 'anonymise' },
+      { title: 'Inject errors', value: 'inject errors' },
     ],
   });
 
@@ -24,6 +26,9 @@ async function start() {
       break;
     case 'anonymise':
       await runAnonymise();
+      break;
+    case 'inject errors':
+      await injectErrors();
       break;
     default:
       break;
