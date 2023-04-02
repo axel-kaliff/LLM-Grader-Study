@@ -29,26 +29,26 @@ const fs = require('fs');
 const basePrompt = fs.readFileSync('./baseprompt.txt', 'utf8');
 
 // Function to get the grading prompt for the task, stored in `../tests/task-${task}/prompts/${prompt}.txt`
-function getPrompt(task, prompt) {
-  return fs.readFileSync(`./../tests/task-${task}/prompts/${prompt}.md`, 'utf8');
+function getPrompt(task, assignmentNumber, prompt) {
+  return fs.readFileSync(`./../tests/task-${task}/prompts/${assignmentNumber}/${prompt}.md`, 'utf8');
 }
 
 // Do test run of getChatGPTResponse
-async function gradeAssignment(taskNumber, assignmentFile, submissionFile, promptLevel, studentNumber, loggingEverything){
+async function gradeAssignment(taskNumber, assignmentFile, assignmentNumber, promptLevel, studentNumber, loggingEverything) {
   // return console.log(`Task number is ${taskNumber} and student number is ${studentNumber} and prompt level is ${promptLevel} and assignment is ${assignment}`);
   if(loggingEverything == false) process.stdout.write(`Grading student ${studentNumber}...`);
   // Get the prompt
 
   // Log getting prompt
   if(loggingEverything) process.stdout.write("Getting prompt... ");
-  const prompt = getPrompt(taskNumber, promptLevel);
+  const prompt = getPrompt(taskNumber, assignmentNumber, promptLevel);
   // Log on same line
   if(loggingEverything) process.stdout.write("\rGetting prompt... Done!\n");
 
   // Get the submission
   // Log getting submission
   if(loggingEverything) process.stdout.write("Getting submission... ");
-  const submission = getSubmission(taskNumber, assignmentFile, submissionFile, studentNumber);
+  const submission = getSubmission(taskNumber, assignmentFile, studentNumber);
   if(loggingEverything) process.stdout.write("\rGetting submission... Done!\n");
 
   // Get the response
@@ -87,7 +87,7 @@ async function gradeAssignment(taskNumber, assignmentFile, submissionFile, promp
     if (!fs.existsSync(`./../tests/task-${taskNumber}/responses/${promptLevel}/${studentNumber}`)) {
       fs.mkdirSync(`./../tests/task-${taskNumber}/responses/${promptLevel}/${studentNumber}`);
     }
-    fs.writeFileSync(`./../tests/task-${taskNumber}/responses/${promptLevel}/${studentNumber}/${assignment}`, response);
+    fs.writeFileSync(`./../tests/task-${taskNumber}/responses/${promptLevel}/${studentNumber}/${assignmentNumber}.md`, response);
     if(loggingEverything) process.stdout.write("\rSaving response... Done!\n");
     // else process.stdout.write(`\rGrading student ${studentNumber}... Done!`);
     done = true;
@@ -99,13 +99,13 @@ async function gradeAssignment(taskNumber, assignmentFile, submissionFile, promp
     await new Promise(r => setTimeout(r, 1000));
     counter++;
     // Don't log the last time because it will be done
-if (done == false) process.stdout.write(`\r${!loggingEverything ? `Grading student ${studentNumber}...` : "Getting response..."} waiting for ${counter} seconds`);
+    if (done == false) process.stdout.write(`\r${!loggingEverything ? `Grading student ${studentNumber}...` : "Getting response..."} waiting for ${counter} seconds`);
   }
 }
 
 // In case this file is run directly, run the function
 if (require.main === module) {
-  gradeAssignment(taskNumber, submissionFile, promptLevel, studentNumber, true);
+  // gradeAssignment(taskNumber, submissionFile, promptLevel, studentNumber, true);
 }
 
 module.exports = gradeAssignment;

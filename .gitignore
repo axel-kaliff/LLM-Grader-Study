@@ -1,2 +1,8 @@
 node_modules
 .env
+
+tests/**/submissions/original
+tests/**/submissions/graded
+tests/**/submissions/anonymised
+src/consents.json
+
