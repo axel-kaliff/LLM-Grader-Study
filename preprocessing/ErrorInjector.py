@@ -54,10 +54,15 @@ class ErrorInjector:
             f"An error injection program, you take code and change it so that it contains errors (or more errors). When the user provides code, please change it so that it contains {num_errors} instances of a {error_type} error. "
             + "Example errors for this type:\n\n"
             + "\n".join(ErrorInjector.error_types[error_type])
-            + "\n\n You should respond with the altered code only. Do not add any of your own comments or text before or after the code, only respond with the altered code no matter what."
+            + "\n\n Your response should first be a comment that describes the error(s) you introduced. Briefly explain what the error is and why it is an error."
+            + "\n\n Your response should consist of two things: the first should be a comment explaining the error and the second thing should be the altered code."
+            + "\n\n The comment should be a single line comment and should be placed at the top of the code."
+            + "\n\n After the comment you should respond with the altered code only. Do not add any of your own comments or text before or after the code, only respond with the altered code no matter what."
         )
 
-        response = self.prompt_gpt(code, prompt)
+        # print(prompt)
+
+        # response = self.prompt_gpt(code, prompt)
 
         output_file_path = self.get_output_file_path(
             input_file_path, output_dir_path, error_type)
@@ -76,6 +81,13 @@ class ErrorInjector:
         )
 
         response = response["choices"][0]["message"]["content"]
+
+        # print(response)
+
+        # remove the first line of the response, which is the comment
+        comment, code = response.split("\n", 1)
+
+        print(comment), print(code)
 
         return response
 
@@ -113,6 +125,6 @@ if __name__ == '__main__':
     target_dir = os.path.join(cwd, "preprocessing")
     output_dir = os.path.join(target_dir, "incorrect")
 
-    for error_type in ErrorInjector.error_types:
-        injector.inject_errors_in_directory(
-            target_dir, output_dir, error_type)
+    # inject errors into all files in the target directory
+    injector.inject_errors_in_directory(
+        target_dir, output_dir, "syntax", num_errors=1)
