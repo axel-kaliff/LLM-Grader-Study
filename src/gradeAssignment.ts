@@ -28,6 +28,11 @@ export default async function gradeAssignment({
       });
     });
 
+    // remove first line from student code (errror injector comment)
+    studentCode.forEach((code, index) => {
+      studentCode[index] = code.split('\n').slice(1).join('\n');
+    });
+
     // Get the exercise prompt from
     const exercisePrompt = fs.readFileSync(
       `tests/task-${task}/prompts/${exercise}/instruction.md`,
